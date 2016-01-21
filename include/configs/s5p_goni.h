@@ -147,6 +147,8 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 
 #undef CONFIG_USE_IRQ
 
+#define CONFIG_TQ210_IIC_PM_CHIP
+
 #ifndef CONFIG_SPL_BUILD 
 /* SD/MMC configuration */
 #define CONFIG_GENERIC_MMC

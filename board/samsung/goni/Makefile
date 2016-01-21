@@ -32,6 +32,8 @@ COBJS-y	:= goni.o
 
 ifdef CONFIG_SPL_BUILD
 SOBJS	:= lowlevel_init.o mem_setup.o
+else
+COBJS-$(CONFIG_TQ210_IIC_PM_CHIP) += pmic.o
 endif
 
 SRCS    := $(SOBJS:.o=.S) $(COBJS-y:.o=.c)

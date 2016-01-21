@@ -53,6 +53,7 @@
 #include <fdtdec.h>
 #include <post.h>
 #include <logbuff.h>
+#include <pmic.h>
 
 #ifdef CONFIG_BITBANGMII
 #include <miiphy.h>
@@ -564,6 +565,10 @@ void board_init_r(gd_t *id, ulong dest_addr)
 	arch_early_init_r();
 #endif
 	power_init_board();
+
+#ifdef CONFIG_TQ210_IIC_PM_CHIP
+	PMIC_InitIp();
+#endif
 
 #if !defined(CONFIG_SYS_NO_FLASH)
 	puts("Flash: ");

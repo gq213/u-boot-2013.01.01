@@ -29,8 +29,8 @@
 #include <sys/stat.h>
 #include <compiler.h>
 
-#define CHECKSUM_OFFSET		(14*1024-4)
-#define BUFSIZE			(14*1024)
+#define CHECKSUM_OFFSET		(8*1024-16)
+#define BUFSIZE			(8*1024)
 #define FILE_PERM		(S_IRUSR | S_IWUSR | S_IRGRP \
 				| S_IWGRP | S_IROTH | S_IWOTH)
 /*
@@ -88,7 +88,9 @@ int main(int argc, char **argv)
 
 	count = (len < CHECKSUM_OFFSET) ? len : CHECKSUM_OFFSET;
 
-	if (read(ifd, buffer, count) != count) {
+	memset(buffer, 0x00, BUFSIZE);
+
+	if (read(ifd, buffer+16, count) != count) {
 		fprintf(stderr, "%s: Can't read %s: %s\n",
 			argv[0], argv[1], strerror(errno));
 
@@ -98,12 +100,15 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	for (i = 0, checksum = 0; i < CHECKSUM_OFFSET; i++)
+	count = cpu_to_le32(count);
+	memcpy(&buffer[0], &count, sizeof(count));
+
+	for (i = 16, checksum = 0; i < CHECKSUM_OFFSET; i++)
 		checksum += buffer[i];
 
 	checksum = cpu_to_le32(checksum);
 
-	memcpy(&buffer[CHECKSUM_OFFSET], &checksum, sizeof(checksum));
+	memcpy(&buffer[8], &checksum, sizeof(checksum));
 
 	if (write(ofd, buffer, BUFSIZE) != BUFSIZE) {
 		fprintf(stderr, "%s: Can't write %s: %s\n",

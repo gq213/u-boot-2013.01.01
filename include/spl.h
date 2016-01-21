@@ -63,7 +63,7 @@ void spl_nand_load_image(void);
 void spl_nor_load_image(void);
 
 /* MMC SPL functions */
-void spl_mmc_load_image(void);
+int spl_mmc_load_image(void);
 
 /* YMODEM SPL functions */
 void spl_ymodem_load_image(void);
@@ -77,4 +77,9 @@ void spl_net_load_image(const char *device);
 #ifdef CONFIG_SPL_BOARD_INIT
 void spl_board_init(void);
 #endif
+
+void uart_putc (char c);
+void uart_puts (char *s);
+void debug_reg(u32 value);
+
 #endif

@@ -15,6 +15,8 @@ LIB	= $(obj)libspl.o
 
 ifdef CONFIG_SPL_BUILD
 COBJS-$(CONFIG_SPL_FRAMEWORK) += spl.o
+COBJS-$(CONFIG_SPL_BOOT) += spl_boot.o
+COBJS-$(CONFIG_SPL_MMC_SUPPORT) += spl_mmc.o
 COBJS-$(CONFIG_SPL_NOR_SUPPORT) += spl_nor.o
 COBJS-$(CONFIG_SPL_YMODEM_SUPPORT) += spl_ymodem.o
 COBJS-$(CONFIG_SPL_NAND_SUPPORT) += spl_nand.o

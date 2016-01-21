@@ -28,8 +28,11 @@ include $(TOPDIR)/config.mk
 
 LIB	= $(obj)lib$(BOARD).o
 
-COBJS-y	:= goni.o onenand.o
-SOBJS	:= lowlevel_init.o
+COBJS-y	:= goni.o
+
+ifdef CONFIG_SPL_BUILD
+SOBJS	:= lowlevel_init.o mem_setup.o
+endif
 
 SRCS    := $(SOBJS:.o=.S) $(COBJS-y:.o=.c)
 OBJS	:= $(addprefix $(obj),$(COBJS-y))

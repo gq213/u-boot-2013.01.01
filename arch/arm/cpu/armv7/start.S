@@ -34,6 +34,7 @@
 #include <version.h>
 #include <asm/system.h>
 #include <linux/linkage.h>
+#include <asm/arch/cpu.h>
 
 .globl _start
 _start: b	reset
@@ -152,6 +153,19 @@ reset:
 	/* the mask ROM code should have PLL and others stable */
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
 	bl	cpu_init_cp15
+	
+	/*电源管理，保持供电*/
+	/* PS_HOLD(GPJ2_5) set to output high */
+	ldr		r0, =ELFIN_GPIO_BASE
+	ldr		r1, =0x00100000
+	str		r1, [r0, #GPJ2CON_OFFSET]
+
+	ldr		r1, =0x0400
+	str		r1, [r0, #GPJ2PUD_OFFSET]
+
+	ldr		r1, =0x20
+	str		r1, [r0, #GPJ2DAT_OFFSET]
+	
 	bl	cpu_init_crit
 #endif
 

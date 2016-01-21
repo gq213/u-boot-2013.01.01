@@ -823,7 +823,7 @@ clean:
 	       $(obj)tools/gdb/{astest,gdbcont,gdbsend}			  \
 	       $(obj)tools/gen_eth_addr    $(obj)tools/img2srec		  \
 	       $(obj)tools/mk{env,}image   $(obj)tools/mpc86x_clk	  \
-	       $(obj)tools/mk{smdk5250,}spl				  \
+	       $(obj)tools/mk{smdk5250,goni,}spl				  \
 	       $(obj)tools/mxsboot					  \
 	       $(obj)tools/ncb		   $(obj)tools/ubsha1		  \
 	       $(obj)tools/kernel-doc/docproc
@@ -879,6 +879,7 @@ clobber:	tidy
 	@[ ! -d $(obj)nand_spl ] || find $(obj)nand_spl -name "*" -type l -print | xargs rm -f
 	@rm -f $(obj)dts/*.tmp
 	@rm -f $(obj)spl/u-boot-spl{,-pad}.ais
+	@rm -fr spl/arch spl/board spl/common spl/spl
 
 mrproper \
 distclean:	clobber unconfig

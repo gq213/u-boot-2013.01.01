@@ -84,7 +84,6 @@
 
 #undef CONFIG_CMD_FPGA
 #undef CONFIG_CMD_MISC
-#undef CONFIG_CMD_NET
 #undef CONFIG_CMD_NFS
 #undef CONFIG_CMD_XIMG
 #define CONFIG_CMD_CACHE
@@ -155,6 +154,25 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 #define CONFIG_SDHCI
 #define CONFIG_S5P_SDHCI
 #define CONFIG_CMD_MMC
+/*
+ * Ethernet Contoller driver
+ */
+#ifdef CONFIG_CMD_NET
+#define CONFIG_DRIVER_DM9000		1
+#define CONFIG_DM9000_BASE		0x88000000
+#define DM9000_IO			CONFIG_DM9000_BASE
+#define DM9000_DATA			(CONFIG_DM9000_BASE + 0x4)
+/*#define CONFIG_DM9000_DEBUG*/
+
+#define CONFIG_CMD_PING
+
+#define CONFIG_ETHADDR      00:40:5c:26:0a:5b 
+#define CONFIG_NETMASK      255.255.255.0  
+#define CONFIG_IPADDR       192.168.1.6  
+#define CONFIG_SERVERIP     192.168.1.8  
+#define CONFIG_GATEWAYIP    192.168.1.1  
+#endif /* CONFIG_CMD_NET */
+
 #endif
 
 

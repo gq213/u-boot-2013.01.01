@@ -29,12 +29,44 @@
 #include <usb/s3c_udc.h>
 #include <asm/arch/cpu.h>
 #include <power/max8998_pmic.h>
+#include <netdev.h>
+
+#define DM9000_Tacs (0x0)   // 0clk     address set-up  
+#define DM9000_Tcos (0x0)   // 4clk     chip selection set-up  
+#define DM9000_Tacc (0x7)   // 14clk    access cycle  
+#define DM9000_Tcoh (0x0)   // 1clk     chip selection hold  
+#define DM9000_Tah  (0x0)   // 4clk     address holding time  
+#define DM9000_Tacp (0x0)   // 6clk     page mode access cycle  
+#define DM9000_PMC  (0x0)   // normal(1data)page mode configuration
+
+
 DECLARE_GLOBAL_DATA_PTR;
 
 static struct s5pc110_gpio *s5pc110_gpio;
 
+#ifdef CONFIG_DRIVER_DM9000  
+static void dm9000_pre_init(void)  
+{  
+    unsigned int tmp;  
+   
+    SROM_BW_REG &= ~(0xf << 4);  
+    SROM_BW_REG |= (1<<7) | (1<<6) | (1<<5) | (1<<4);
+	 
+    SROM_BC1_REG = ((DM9000_Tacs<<28)|(DM9000_Tcos<<24)|(DM9000_Tacc<<16)|(DM9000_Tcoh<<12)|(DM9000_Tah<<8)|(DM9000_Tacp<<4)|(DM9000_PMC));  
+	   
+    tmp = MP01CON_REG;  
+    tmp &=~(0xf<<4);  
+    tmp |=(2<<4);  
+    MP01CON_REG = tmp;  
+} 
+#endif 
+
 int board_init(void)
 {
+#ifdef CONFIG_DRIVER_DM9000  
+    dm9000_pre_init();  
+#endif
+
 	/* Set Initial global variables */
 	s5pc110_gpio = (struct s5pc110_gpio *)S5PC110_GPIO_BASE;
 
@@ -43,6 +75,18 @@ int board_init(void)
 
 	return 0;
 }
+
+#if defined(CONFIG_CMD_NET)
+int board_eth_init(bd_t *bis)
+{
+	int rc = 0;
+#ifdef CONFIG_DRIVER_DM9000  
+    rc = dm9000_initialize(bis);  
+#endif
+	return rc;
+}
+#endif
+
 
 int power_init_board(void)
 {

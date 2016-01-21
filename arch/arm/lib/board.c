@@ -118,6 +118,9 @@ static int init_baudrate(void)
 
 static int display_banner(void)
 {
+	printf("\n\n**********************************************************");
+	printf("\n*                    modify by gq213                     *");
+	printf("\n**********************************************************");
 	printf("\n\n%s\n\n", version_string);
 	debug("U-Boot code: %08lX -> %08lX  BSS: -> %08lX\n",
 	       _TEXT_BASE,

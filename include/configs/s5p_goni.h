@@ -89,14 +89,17 @@
 #define CONFIG_CMD_CACHE
 #define CONFIG_CMD_REGINFO
 
-#define CONFIG_BOOTDELAY		2
+#define CONFIG_BOOTDELAY		3
 #define CONFIG_ZERO_BOOTDELAY_CHECK
 
 /*系统在上电自动执行时所执行的命令对应环境变量中bootcmd的值*/
-#define CONFIG_BOOTCOMMAND	"tftp 20008000 uImage; bootm 20008000"
+/*#define CONFIG_BOOTCOMMAND	"tftp 20008000 uImage; bootm 20008000"*/
+#define CONFIG_BOOTCOMMAND	"fatload mmc 0:1 20008000 uImage; bootm 20008000"
 /*u-boot向Linux内核传递的参数,实际上这个宏值就是环境变量中的bootargs的值*/
-#define CONFIG_BOOTARGS	"noinitrd console=ttySAC0 root=/dev/nfs rw " \
-"nfsroot=192.168.1.8:/home/network/rootfs,nolock,tcp ip=192.168.1.6 init=/linuxrc"
+/*#define CONFIG_BOOTARGS	"noinitrd console=ttySAC0 root=/dev/nfs rw " \
+"nfsroot=192.168.1.8:/home/work/nfs/rootfs,v3,nolock,tcp ip=192.168.1.6 init=/linuxrc"*/
+#define CONFIG_BOOTARGS	"noinitrd console=ttySAC0 root=/dev/mmcblk0p2 rw " \
+"rootfstype=ext4 rootwait init=/linuxrc"
 
 /* allow to overwrite serial and ethaddr */
 /* 写保护设置被关闭，任何人可以重设板子参数*/
@@ -104,7 +107,7 @@
 /*It's important to serial console !
 Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 #define CONFIG_SYS_CONSOLE_IS_IN_ENV
-
+#if 0
 #define CONFIG_EXTRA_ENV_SETTINGS					\
 	"mmcblk=/dev/mmcblk0p2\0" \
 	"rootfstype=ext4\0" \
@@ -114,6 +117,15 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 	"mmcboot=" \
 		"set bootargs noinitrd root=${mmcblk} rw rootfstype=${rootfstype} rootwait init=/linuxrc console=ttySAC0;" \
 		"run bootk"
+#else
+#define CONFIG_EXTRA_ENV_SETTINGS					\
+	"bootk=" \
+		"tftp 20008000 uImage;" \
+		"bootm 20008000\0" \
+	"nfsboot=" \
+		"set bootargs noinitrd console=ttySAC0 root=/dev/nfs rw nfsroot=192.168.1.8:/home/work/nfs/rootfs,v3,nolock,tcp ip=192.168.1.6 init=/linuxrc;" \
+		"run bootk"
+#endif
 
 #define CONFIG_IDENT_STRING		" for Goni"
 

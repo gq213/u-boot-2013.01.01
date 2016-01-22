@@ -105,6 +105,16 @@
 Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 #define CONFIG_SYS_CONSOLE_IS_IN_ENV
 
+#define CONFIG_EXTRA_ENV_SETTINGS					\
+	"mmcblk=/dev/mmcblk0p2\0" \
+	"rootfstype=ext4\0" \
+	"bootk=" \
+		"fatload mmc 0:1 20008000 uImage;" \
+		"bootm 20008000\0" \
+	"mmcboot=" \
+		"set bootargs noinitrd root=${mmcblk} rw rootfstype=${rootfstype} rootwait init=/linuxrc console=ttySAC0;" \
+		"run bootk"
+
 #define CONFIG_IDENT_STRING		" for Goni"
 
 /* Miscellaneous configurable options */
@@ -156,6 +166,17 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 #define CONFIG_SDHCI
 #define CONFIG_S5P_SDHCI
 #define CONFIG_CMD_MMC
+
+/*fat read/write*/
+#define CONFIG_CMD_FAT
+#define CONFIG_FS_FAT
+#define CONFIG_FAT_WRITE
+#define CONFIG_DOS_PARTITION
+#define CONFIG_SUPPORT_VFAT
+
+#define CONFIG_CMD_EXT4
+#define CONFIG_CMD_EXT4_WRITE
+
 /*
  * Ethernet Contoller driver
  */

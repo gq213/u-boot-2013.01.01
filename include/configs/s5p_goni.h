@@ -123,7 +123,7 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 		"tftp 20008000 uImage;" \
 		"bootm 20008000\0" \
 	"nfsboot=" \
-		"set bootargs noinitrd console=tty0 console=ttySAC0 root=/dev/nfs rw nfsroot=192.168.1.8:/home/work/nfs/rootfs,v3,nolock,tcp ip=192.168.1.6 init=/linuxrc;" \
+		"set bootargs noinitrd console=tty0 console=ttySAC0 root=/dev/nfs rw nfsroot=192.168.2.200:/mnt/qiang/work/nfs/rootfs,v3,nolock,tcp ip=192.168.2.100 init=/linuxrc;" \
 		"run bootk"
 #endif
 
@@ -203,9 +203,9 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 
 #define CONFIG_ETHADDR      00:40:5c:26:0a:5b 
 #define CONFIG_NETMASK      255.255.255.0  
-#define CONFIG_IPADDR       192.168.1.6  
-#define CONFIG_SERVERIP     192.168.1.8  
-#define CONFIG_GATEWAYIP    192.168.1.1  
+#define CONFIG_IPADDR       192.168.2.100  
+#define CONFIG_SERVERIP     192.168.2.200  
+#define CONFIG_GATEWAYIP    192.168.2.1  
 #endif /* CONFIG_CMD_NET */
 
 #endif

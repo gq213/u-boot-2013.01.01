@@ -61,11 +61,31 @@ static void dm9000_pre_init(void)
 } 
 #endif 
 
+#define NFCONF  (*(volatile unsigned long *)0xB0E00000)
+#define NFCONT  (*(volatile unsigned long *)0xB0E00004)
+
+#define MP0_1CON  (*(volatile unsigned long *)0xE02002E0)  
+#define MP0_3CON  (*(volatile unsigned long *)0xE0200320)  
+#define MP0_6CON  (*(volatile unsigned long *)0xE0200380)
+
+void nand_init(void)
+{
+	NFCONF = (7<<12)|(7<<8)|(7<<4)|(1<<1);
+	NFCONT = (1<<0)|(1<<1);
+	
+	MP0_1CON &= ~(0xffff<<8);  
+    MP0_1CON |= 0x3333<<8;  
+    MP0_3CON = 0x22222222;  
+    MP0_6CON = 0x22222222;
+}
+
 int board_init(void)
 {
 #ifdef CONFIG_DRIVER_DM9000  
     dm9000_pre_init();  
 #endif
+
+	nand_init();
 
 	/* Set Initial global variables */
 	s5pc110_gpio = (struct s5pc110_gpio *)S5PC110_GPIO_BASE;

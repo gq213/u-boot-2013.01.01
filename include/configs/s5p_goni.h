@@ -96,9 +96,9 @@
 /*#define CONFIG_BOOTCOMMAND	"tftp 20008000 uImage; bootm 20008000"*/
 #define CONFIG_BOOTCOMMAND	"fatload mmc 0:1 20008000 uImage; bootm 20008000"
 /*u-boot向Linux内核传递的参数,实际上这个宏值就是环境变量中的bootargs的值*/
-/*#define CONFIG_BOOTARGS	"noinitrd console=tty0 console=ttySAC0 root=/dev/nfs rw " \
-"nfsroot=192.168.1.8:/home/work/nfs/rootfs,v3,nolock,tcp ip=192.168.1.6 init=/linuxrc"*/
-#define CONFIG_BOOTARGS	"noinitrd console=tty0 console=ttySAC0 root=/dev/mmcblk0p2 rw " \
+/*#define CONFIG_BOOTARGS	"noinitrd console=ttySAC0 root=/dev/nfs rw " \
+"nfsroot=192.168.2.200:/home/work/nfs/rootfs,v3,nolock,tcp ip=192.168.2.100 init=/linuxrc"*/
+#define CONFIG_BOOTARGS	"noinitrd console=ttySAC0 root=/dev/mmcblk0p2 rw " \
 "rootfstype=ext4 rootwait init=/linuxrc"
 
 /* allow to overwrite serial and ethaddr */
@@ -115,7 +115,7 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 		"fatload mmc 0:1 20008000 uImage;" \
 		"bootm 20008000\0" \
 	"mmcboot=" \
-		"set bootargs noinitrd root=${mmcblk} rw rootfstype=${rootfstype} rootwait init=/linuxrc console=tty0 console=ttySAC0;" \
+		"set bootargs noinitrd root=${mmcblk} rw rootfstype=${rootfstype} rootwait init=/linuxrc console=ttySAC0;" \
 		"run bootk"
 #else
 #define CONFIG_EXTRA_ENV_SETTINGS					\
@@ -123,7 +123,7 @@ Define this if you want stdin, stdout &/or stderr to be set to usbtty*/
 		"tftp 20008000 uImage;" \
 		"bootm 20008000\0" \
 	"nfsboot=" \
-		"set bootargs noinitrd console=tty0 console=ttySAC0 root=/dev/nfs rw nfsroot=192.168.2.200:/mnt/qiang/work/nfs/rootfs,v3,nolock,tcp ip=192.168.2.100 init=/linuxrc;" \
+		"set bootargs noinitrd console=ttySAC0 root=/dev/nfs rw nfsroot=192.168.2.200:/mnt/qiang/work/nfs/rootfs,v3,nolock,tcp ip=192.168.2.100 init=/linuxrc;" \
 		"run bootk"
 #endif
 
